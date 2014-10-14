@@ -124,7 +124,7 @@ class Bee(Insect):
         """Return True if this Bee cannot advance to the next Place."""
         # Phase 3: Special handling for NinjaAnt
         "*** YOUR CODE HERE ***"
-        return self.place.ant is not None
+        return self.place.ant is not None and self.place.ant.blocks_path
 
     def action(self, colony):
         """A Bee's action stings the Ant that blocks its exit if it is blocked,
@@ -141,6 +141,7 @@ class Bee(Insect):
 class Ant(Insect):
     """An Ant occupies a place and does work for the colony."""
 
+    blocks_path = True
     is_ant = True
     implemented = False  # Only implemented Ant classes should be instantiated
     damage = 0
@@ -452,10 +453,19 @@ class FireAnt(Ant):
     name = 'Fire'
     damage = 3
     "*** YOUR CODE HERE ***"
-    implemented = False
+    implemented = True
+    food_cost = 4
 
     def reduce_armor(self, amount):
         "*** YOUR CODE HERE ***"
+
+        bees_copy = list(self.place.bees)
+
+        if bees_copy:
+            for bee in bees_copy:
+                bee.reduce_armor(self.damage)
+
+        Ant.reduce_armor(self, amount)
 
 
 class LongThrower(ThrowerAnt):
@@ -476,6 +486,15 @@ class ShortThrower(ThrowerAnt):
 
 "*** YOUR CODE HERE ***"
 # The WallAnt class
+class WallAnt(Ant):
+    """FireAnt does nothing but just stops the bees from moving ahead"""
+
+    name = 'Wall'
+    implemented = True
+    food_cost = 4
+
+    def __init__(self):
+        Ant.__init__(self, 4)
 
 
 class NinjaAnt(Ant):
@@ -484,11 +503,17 @@ class NinjaAnt(Ant):
     name = 'Ninja'
     damage = 1
     "*** YOUR CODE HERE ***"
-    implemented = False
+    implemented = True
+    blocks_path = False
+    food_cost = 6
 
     def action(self, colony):
         "*** YOUR CODE HERE ***"
+        bees_copy = list(self.place.bees)
 
+        if bees_copy:
+            for bee in bees_copy:
+                bee.reduce_armor(self.damage)
 
 "*** YOUR CODE HERE ***"
 # The ScubaThrower class
