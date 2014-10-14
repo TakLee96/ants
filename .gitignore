@@ -1,2 +1,14 @@
 .tests
 tests
+
+.idea
+idea
+
+.ok_messages
+ok_messages
+
+.ok_refresh
+ok_refresh
+
+.__pycache__
+__pycache__
