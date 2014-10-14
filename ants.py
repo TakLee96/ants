@@ -1,4 +1,9 @@
 """The ants module implements game logic for Ants Vs. SomeBees."""
+# Name: Li, JiaHang
+# Log In: cs61a-ayc
+# Partner: Chao, Minghan
+# Log In: cs61a-hy
+
 
 import random
 import sys
