@@ -4,6 +4,9 @@ tests
 .idea
 idea
 
+.idea/
+idea/
+
 .ok_messages
 ok_messages
 
