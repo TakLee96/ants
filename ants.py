@@ -635,7 +635,7 @@ class QueenAnt:  # You should change this line
         """
         "*** YOUR CODE HERE ***"
 
-p
+
 class AntRemover(Ant):
     """Allows the player to remove ants from the board in the GUI."""
 
