@@ -47,8 +47,17 @@ class Place:
         if insect.is_ant:
             # Phase 4: Special handling for BodyguardAnt
             "*** YOUR CODE HERE ***"
-            assert self.ant is None, 'Two ants in {0}'.format(self)
-            self.ant = insect
+            if self.ant:
+                if self.ant.can_contain(insect):
+                    self.ant.ant = insect
+                elif insect.can_contain(self.ant):
+                    insect.ant = self.ant
+                    self.ant.place = self
+                    self.ant = insect
+                else:
+                    assert self.ant is None, 'Two ants in {0}'.format(self)
+            else:
+                self.ant = insect
         else:
             self.bees.append(insect)
         insect.place = self
@@ -59,7 +68,10 @@ class Place:
             assert self.ant == insect, '{0} is not in {1}'.format(insect, self)
             # Phase 4: Special handling for QueenAnt
             "*** YOUR CODE HERE ***"
-            self.ant = None
+            if self.ant.ant:
+                self.ant = self.ant.ant
+            else:
+                self.ant = None
         else:
             self.bees.remove(insect)
 
@@ -146,10 +158,15 @@ class Ant(Insect):
     implemented = False  # Only implemented Ant classes should be instantiated
     damage = 0
     food_cost = 0
+    container = False
 
     def __init__(self, armor=1):
         """Create an Ant with an armor quantity."""
         Insect.__init__(self, armor)
+        self.ant = None
+
+    def can_contain(self, other):
+        return self.container and not (self.ant or other.container)
 
 
 class HarvesterAnt(Ant):
@@ -567,8 +584,10 @@ class HungryAnt(Ant):
 class BodyguardAnt(Ant):
     """BodyguardAnt provides protection to other Ants."""
     name = 'Bodyguard'
+    food_cost = 4
     "*** YOUR CODE HERE ***"
-    implemented = False
+    implemented = True
+    container = True
 
     def __init__(self):
         Ant.__init__(self, 2)
@@ -576,9 +595,12 @@ class BodyguardAnt(Ant):
 
     def contain_ant(self, ant):
         "*** YOUR CODE HERE ***"
+        self.ant = ant
 
     def action(self, colony):
         "*** YOUR CODE HERE ***"
+        if self.ant:
+            self.ant.action(colony)
 
 
 class QueenPlace:
