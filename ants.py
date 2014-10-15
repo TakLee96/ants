@@ -217,10 +217,10 @@ class ThrowerAnt(Ant):
         self.throw_at(self.nearest_bee(colony.hive))
 
 class ScubaThrower(ThrowerAnt):
-    name= 'Scuba'
-    implemented=True
-    food_cost=5
-    watersafe=True
+    nam = 'Scuba'
+    implemented = True
+    food_cost = 5
+    watersafe = True
 
 
 class Hive(Place):
@@ -558,25 +558,25 @@ class HungryAnt(Ant):
     name = 'Hungry'
     "*** YOUR CODE HERE ***"
     implemented = True
-    time_to_digest=3
-    food_cost=4
+    time_to_digest = 3
+    food_cost = 4
 
     def __init__(self):
         Ant.__init__(self)
         "*** YOUR CODE HERE ***"
-        self.digesting=3-self.time_to_digest
+        self.digesting = 3- self.time_to_digest
 
     def eat_bee(self, bee):
         "*** YOUR CODE HERE ***"
-        bee.armor=0
+        bee.armor = 0
 
     def action(self, colony):
         "*** YOUR CODE HERE ***"
-        if self.digesting>0:
-            self.time_to_digest-=1
+        if self.digesting > 0:
+            self.time_to_digest -= 1
         else:
             self.eat_bee
-            self.time_to_digest=3
+            self.time_to_digest = 3
 
 
 
