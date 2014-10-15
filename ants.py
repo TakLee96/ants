@@ -233,15 +233,13 @@ class ThrowerAnt(Ant):
         """Throw a leaf at the nearest Bee in range."""
         self.throw_at(self.nearest_bee(colony.hive))
 
-<<<<<<< HEAD
-=======
+
 class ScubaThrower(ThrowerAnt):
     name = 'Scuba'
     implemented = True
     food_cost = 5
     watersafe = True
 
->>>>>>> b6b68d0f2ab3385684ede917041eea304d6d6c98
 
 class Hive(Place):
     """The Place from which the Bees launch their assault.
