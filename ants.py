@@ -233,12 +233,6 @@ class ThrowerAnt(Ant):
         """Throw a leaf at the nearest Bee in range."""
         self.throw_at(self.nearest_bee(colony.hive))
 
-class ScubaThrower(ThrowerAnt):
-    nam = 'Scuba'
-    implemented = True
-    food_cost = 5
-    watersafe = True
-
 
 class Hive(Place):
     """The Place from which the Bees launch their assault.
@@ -566,6 +560,11 @@ class NinjaAnt(Ant):
 
 "*** YOUR CODE HERE ***"
 # The ScubaThrower class
+class ScubaThrower(ThrowerAnt):
+    name = 'Scuba'
+    implemented = True
+    food_cost = 5
+    watersafe = True
 
 
 class HungryAnt(Ant):
@@ -581,19 +580,20 @@ class HungryAnt(Ant):
     def __init__(self):
         Ant.__init__(self)
         "*** YOUR CODE HERE ***"
-        self.digesting = 3- self.time_to_digest
+        self.digesting = 0
 
     def eat_bee(self, bee):
         "*** YOUR CODE HERE ***"
-        bee.armor = 0
+        bee.reduce_armor(bee.armor)
 
     def action(self, colony):
         "*** YOUR CODE HERE ***"
         if self.digesting > 0:
-            self.time_to_digest -= 1
+            self.digesting -= 1
         else:
-            self.eat_bee
-            self.time_to_digest = 3
+            if self.place.bees:
+                self.eat_bee(random_or_none(list(self.place.bees)))
+                self.digesting = self.time_to_digest
 
 
 
