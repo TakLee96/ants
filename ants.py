@@ -234,7 +234,7 @@ class ThrowerAnt(Ant):
         self.throw_at(self.nearest_bee(colony.hive))
 
 class ScubaThrower(ThrowerAnt):
-    nam = 'Scuba'
+    name = 'Scuba'
     implemented = True
     food_cost = 5
     watersafe = True
