@@ -68,10 +68,13 @@ class Place:
             assert self.ant == insect, '{0} is not in {1}'.format(insect, self)
             # Phase 4: Special handling for QueenAnt
             "*** YOUR CODE HERE ***"
-            if self.ant.ant:
-                self.ant = self.ant.ant
+            if type(self.ant) == QueenAnt and self.ant.num_queen == 1:
+                return
             else:
-                self.ant = None
+                if self.ant.ant:
+                    self.ant = self.ant.ant
+                else:
+                    self.ant = None
         else:
             self.bees.remove(insect)
 
@@ -234,11 +237,11 @@ class ThrowerAnt(Ant):
         self.throw_at(self.nearest_bee(colony.hive))
 
 
-class ScubaThrower(ThrowerAnt):
-    name = 'Scuba'
-    implemented = True
-    food_cost = 5
-    watersafe = True
+# class ScubaThrower(ThrowerAnt):
+#     name = 'Scuba'
+#     implemented = True
+#     food_cost = 5
+#     watersafe = True
 
 
 class Hive(Place):
@@ -634,21 +637,30 @@ class QueenPlace:
     """
     def __init__(self, colony_queen, ant_queen):
         "*** YOUR CODE HERE ***"
+        self.colony_queen = colony_queen
+        self.ant_queen = ant_queen
 
     @property
     def bees(self):
         "*** YOUR CODE HERE ***"
+        return self.colony_queen.bees + self.ant_queen.bees
 
 
-class QueenAnt:  # You should change this line
+class QueenAnt(ScubaThrower):  # You should change this line
     """The Queen of the colony.  The game is over if a bee enters her place."""
 
     name = 'Queen'
     "*** YOUR CODE HERE ***"
-    implemented = False
+    implemented = True
+    total_queens = 0
+    ant_dict = {}
+    food_cost = 6
 
     def __init__(self):
         "*** YOUR CODE HERE ***"
+        ScubaThrower.__init__(self)
+        QueenAnt.total_queens += 1
+        self.num_queen = QueenAnt.total_queens
 
     def action(self, colony):
         """A queen ant throws a leaf, but also doubles the damage of ants
@@ -657,6 +669,42 @@ class QueenAnt:  # You should change this line
         Impostor queens do only one thing: reduce their own armor to 0.
         """
         "*** YOUR CODE HERE ***"
+        def double_damage(_ant):
+            if not _ant or type(_ant) == QueenAnt:
+                return
+            if _ant not in self.ant_dict:
+                self.ant_dict[_ant] = 'doubled'
+                _ant.damage *= 2
+            double_damage(_ant.ant)
+
+        if self.num_queen == 1:
+            if type(colony.queen) != QueenPlace:
+                colony.queen = QueenPlace(colony.queen, self.place)
+
+            # this is the QueenAnt
+            ScubaThrower.action(self, colony)
+
+            # do youself
+            if type(self.place.ant) == BodyguardAnt:
+                double_damage(self.place.ant)
+
+            # forward
+            curr_place = self.place
+            while curr_place.entrance:
+                curr_place = curr_place.entrance
+                this_ant = curr_place.ant
+                double_damage(this_ant)
+
+            # backward
+            curr_place = self.place
+            while curr_place.exit:
+                curr_place = curr_place.exit
+                this_ant = curr_place.ant
+                double_damage(this_ant)
+
+        else:
+            # these are the Impostor queens
+            self.reduce_armor(self.armor)
 
 
 class AntRemover(Ant):
