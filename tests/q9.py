@@ -27,6 +27,7 @@ test = {
   'suites': [
     [
       {
+        'locked': True,
         'test': r"""
         >>> # Testing queen place
         >>> colony_queen = ants.Place('Original Queen Location of the Colony')
@@ -35,10 +36,12 @@ test = {
         >>> colony_queen.bees = [ants.Bee(1, colony_queen) for _ in range(3)]
         >>> ant_queen.bees = [ants.Bee(2, colony_queen) for _ in range(4)]
         >>> len(queen_place.bees)
-        7
+        0a45ac3c695d7cfe52c8871410053f86
+        # locked
         >>> bee_armor = sum(bee.armor for bee in queen_place.bees)
         >>> bee_armor
-        11
+        acff47a1d241f5f53eaab665423217ba
+        # locked
         """,
         'type': 'doctest'
       }
@@ -106,6 +109,7 @@ test = {
     ],
     [
       {
+        'locked': True,
         'test': r"""
         >>> # Testing Game ends when Queen place is infiltrated
         >>> bee = ants.Bee(3)
@@ -113,14 +117,17 @@ test = {
         >>> colony.places['tunnel_0_2'].add_insect(bee)
         >>> queen.action(colony)
         >>> len(colony.queen.bees) <= 0 # If failed, Game ended before it should have
-        True
+        818d43c4eb49bce28d693d249148409c
+        # locked
         >>> bee.action(colony)
         >>> len(colony.queen.bees) > 0 # Game should have ended
-        True
+        818d43c4eb49bce28d693d249148409c
+        # locked
         """,
         'type': 'doctest'
       },
       {
+        'locked': True,
         'test': r"""
         >>> # Testing Imposter Queen
         >>> ant = ants.ThrowerAnt()
@@ -131,21 +138,28 @@ test = {
         >>> colony.places['tunnel_0_4'].add_insect(bee)
         >>> imposter.action(colony)
         >>> bee.armor   # Imposter should not damage bee
-        10
+        086a72f49b17ea6684f0eb072be8a35d
+        # locked
         >>> ant.damage  # Imposter should not double damage
-        1
+        d051d778cc59e30ceee412e76d1fdbc4
+        # locked
         >>> queen.action(colony)
         >>> bee.armor   # Queen should damage bee
-        9
+        2755a240f0819a0486e97556e954e8e4
+        # locked
         >>> ant.damage  # Queen should double damage
-        2
+        b911fabd1c66f55e635ee4f72fd9b5c1
+        # locked
         >>> ant.action(colony)
         >>> bee.armor   # If failed, ThrowerAnt has incorrect damage
-        7
+        0a45ac3c695d7cfe52c8871410053f86
+        # locked
         >>> queen.armor   # Long live the Queen
-        1
+        d051d778cc59e30ceee412e76d1fdbc4
+        # locked
         >>> imposter.armor  # Short-lived imposter
-        0
+        11862fc8ebde17878dbcfc9a133b7094
+        # locked
         """,
         'type': 'doctest'
       }
@@ -204,6 +218,7 @@ test = {
     ],
     [
       {
+        'locked': True,
         'test': r"""
         >>> # Testing Remove
         >>> p0 = colony.places['tunnel_0_0']
@@ -213,14 +228,17 @@ test = {
         >>> p0.remove_insect(queen)
         >>> p1.remove_insect(imposter)
         >>> queen == p0.ant # Queen can't be removed
-        True
+        818d43c4eb49bce28d693d249148409c
+        # locked
         >>> p1.ant      # Imposter should have been removed
-        None
+        39bf9133062430f919b45aa38441a719
+        # locked
         >>> queen.action(colony)
         """,
         'type': 'doctest'
       },
       {
+        'locked': True,
         'test': r"""
         >>> # Testing that game still ends the old-fashioned way
         >>> bee = ants.Bee(3)
@@ -230,15 +248,18 @@ test = {
         >>> queen.action(colony)
         >>> bee.action(colony)
         >>> len(colony.queen.bees) <= 0 # Game should not be over
-        True
+        818d43c4eb49bce28d693d249148409c
+        # locked
         >>> queen.action(colony)
         >>> bee.action(colony)
         >>> len(colony.queen.bees) > 0 # Game should have ended
-        True
+        818d43c4eb49bce28d693d249148409c
+        # locked
         """,
         'type': 'doctest'
       },
       {
+        'locked': True,
         'test': r"""
         >>> # Testing if queen will buff newly added ants
         >>> colony.places['tunnel_0_0'].add_insect(ants.ThrowerAnt())
@@ -253,7 +274,8 @@ test = {
         >>> colony.places['tunnel_0_4'].add_insect(bee)
         >>> ant.action(colony)
         >>> bee.armor # Queen should buff new ants
-        1
+        d051d778cc59e30ceee412e76d1fdbc4
+        # locked
         """,
         'type': 'doctest'
       }

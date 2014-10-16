@@ -9,17 +9,21 @@ test = {
   'suites': [
     [
       {
+        'locked': True,
         'test': r"""
         >>> # Testing fire parameters
         >>> fire = FireAnt()
         >>> FireAnt.food_cost
-        4
+        f4b3281120d40117b023d6c1a373fde6
+        # locked
         >>> fire.armor
-        1
+        d051d778cc59e30ceee412e76d1fdbc4
+        # locked
         """,
         'type': 'doctest'
       },
       {
+        'locked': True,
         'test': r"""
         >>> # Testing fire damage
         >>> place = Place('Fire Test1')
@@ -28,13 +32,15 @@ test = {
         >>> place.add_insect(FireAnt())
         >>> bee.action(colony) # attack the FireAnt
         >>> bee.armor
-        2
+        b911fabd1c66f55e635ee4f72fd9b5c1
+        # locked
         """,
         'type': 'doctest'
       }
     ],
     [
       {
+        'locked': True,
         'test': r"""
         >>> # Testing fire does damage to all Bees in its Place
         >>> place = Place('Fire Test2')
@@ -44,11 +50,13 @@ test = {
         >>> place.add_insect(FireAnt())
         >>> bee.action(colony) # attack the FireAnt
         >>> len(place.bees)  # How many bees are left?
-        0
+        11862fc8ebde17878dbcfc9a133b7094
+        # locked
         """,
         'type': 'doctest'
       },
       {
+        'locked': True,
         'test': r"""
         >>> # Testing FireAnt dies
         >>> place = Place('Fire Test3')
@@ -58,13 +66,15 @@ test = {
         >>> place.add_insect(ant)
         >>> bee.action(colony) # attack the FireAnt
         >>> ant.armor
-        0
+        11862fc8ebde17878dbcfc9a133b7094
+        # locked
         """,
         'type': 'doctest'
       }
     ],
     [
       {
+        'locked': True,
         'test': r"""
         >>> # Testing fire damage is instance attribute
         >>> place = Place('Fire Test4')
@@ -75,7 +85,8 @@ test = {
         >>> place.add_insect(buffAnt)
         >>> bee.action(colony) # attack the FireAnt
         >>> bee.armor  # is damage an instance attribute?
-        400
+        224199c2ecb34505040bc79e373e3edf
+        # locked
         """,
         'type': 'doctest'
       }

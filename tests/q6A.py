@@ -9,13 +9,16 @@ test = {
   'suites': [
     [
       {
+        'locked': True,
         'test': r"""
         >>> # Testing WallAnt parameters
         >>> wall = WallAnt()
         >>> wall.armor
-        4
+        f4b3281120d40117b023d6c1a373fde6
+        # locked
         >>> WallAnt.food_cost
-        4
+        f4b3281120d40117b023d6c1a373fde6
+        # locked
         """,
         'type': 'doctest'
       }
