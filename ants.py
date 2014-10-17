@@ -126,6 +126,10 @@ class Bee(Insect):
     name = 'Bee'
     watersafe = True
 
+    def __init__(self, armor):
+        Insect.__init__(self, armor)
+        self.has_effect = False
+
     def sting(self, ant):
         """Attack an Ant, reducing the Ant's armor by 1."""
         ant.reduce_armor(1)
@@ -728,8 +732,12 @@ def make_slow(action):
     """
     "*** YOUR CODE HERE ***"
     def new_action(colony):
+        print("The time now is", colony.time)
         if colony.time % 2 == 0:
+            print("move!")
             action(colony)
+        else:
+            print("fuck! I'm slowed!")
 
     return new_action
 
@@ -739,23 +747,48 @@ def make_stun(action):
     action -- An action method of some Bee
     """
     "*** YOUR CODE HERE ***"
-    return lambda c: None
+    def new_action(colony):
+        print("The time now is", colony.time)
+        print("fuck! I cannot move!")
+
+    return new_action
 
 def apply_effect(effect, bee, duration):
     """Apply a status effect to a Bee that lasts for duration turns."""
     "*** YOUR CODE HERE ***"
     timer = 0
+    prev_effect = None
 
     def action(colony):
         nonlocal timer, bee
         if timer < duration:
+            print("effect is still there!")
             timer += 1
-            bee.action = effect(bee.action)
+            return effect(lambda c: Bee.action(bee, c))(colony)
         else:
+            print("no more effect!")
             del bee.action
-        return bee.action(colony)
+            bee.has_effect = False
+            return Bee.action(bee, colony)
 
-    bee.action = action
+    def bee_already_has_effect_action(colony):
+        nonlocal bee, prev_effect, timer
+        assert prev_effect, "Does not have previous effect"
+        if timer < duration:
+            print("current effect is still here!")
+            timer += 1
+            return effect(lambda c: Bee.action(bee, c))(colony)
+        else:
+            print("current effect is gone!")
+            bee.action = prev_effect
+            return prev_effect(colony)
+
+    if bee.has_effect:
+        prev_effect = bee.action
+        bee.action = bee_already_has_effect_action
+    else:
+        bee.has_effect = True
+        bee.action = action
 
 
 class SlowThrower(ThrowerAnt):
